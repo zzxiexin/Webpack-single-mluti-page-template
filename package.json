@@ -2,8 +2,8 @@
   "name": "webpack-pro",
   "version": "1.0.0",
   "scripts": {
-    "build": "webpack --mode production --module-bind js=babel-loader",
-    "dev": "webpack-dev-server --mode development --module-bind js=babel-loader --open"
+    "build": "webpack --mode production",
+    "dev": "webpack-dev-server --mode development --open"
   },
   "main": "index.js",
   "license": "MIT",
