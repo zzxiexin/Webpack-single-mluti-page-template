@@ -19,4 +19,5 @@
 * html的处理：复制并压缩html文件  html-webpack-plugin html-loader
 * dist的清理：打包前清理源目录文件  clean-webpack-plugin
 * assets的处理：静态资源处理  file-loader
-* server的启用：development 模式下启动服务器并实时刷新  webpack-dev-server
+* server的启用：development 模式下启动服务器并实时刷新  webpack-dev-server   
+注意：webpack版本需要和本地全局的webpack版本保持一致   
