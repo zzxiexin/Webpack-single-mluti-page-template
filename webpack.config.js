@@ -94,8 +94,8 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new MiniCssExtractPlugin({     // 压缩css
-                filename: "[name].css",
-                chunkFilename: "[id].css"
+                filename: "[name].[chunkhash:8].css",
+                chunkFilename: "[id].[chunkhash:8].css"
             }),
             new CleanWebpackPlugin(), // 清理之前的打包文件
         ].concat(htmlWebpackPlugins)
