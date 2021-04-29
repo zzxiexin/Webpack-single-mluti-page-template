@@ -17,5 +17,5 @@
 * css的处理：编译css，自动添加前缀，抽取css到独立文件,并且压缩css  yarn add mini-css-extract-plugin css-loader  style-loader postcss-loader optimize-css-assets-webpack-plugin  -S
 * html的处理：复制并压缩html文件 yarn add html-webpack-plugin html-loader -S 
 * dist的清理：打包前清理源目录文件  clean-webpack-plugin
-* assets的处理,对于小的图片打包成bas64位数据：静态资源处理  file-loader
+* assets的处理,对于小的图片打包成bas64位数据：静态资源处理  url-loader
 * server的启用：development 模式下启动服务器并实时刷新  webpack-dev-server
