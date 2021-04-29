@@ -3,7 +3,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin"); // 把css文件
 const HtmlWebPackPlugin = require("html-webpack-plugin"); // 将打包的js注入到html模板
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); //清除之前打包的文件
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin'); // 压缩css
-const CopyWebpackPlugin = require('copy-webpack-plugin'); // 静态文件搬迁
 const handleCurDir = name => {
     return path.join(__dirname, name);
 }
@@ -43,18 +42,8 @@ module.exports = (env, argv) => {
                             minimize: true
                         }
                     }]
-                },
-                {
-                    test: /\.(png|jpg|gif)$/,
-                    use: [
-                        {
-                            loader: 'file-loader',
-                            options: {
-                                limit: '1024'
-                            }
-                        }
-                    ]
                 }
+
             ]
         },
         plugins: [
@@ -68,11 +57,6 @@ module.exports = (env, argv) => {
             }),
             new CleanWebpackPlugin(), // 清理之前的打包文件
             new OptimizeCssAssetsWebpackPlugin(), //压缩css文件
-            new CopyWebpackPlugin({
-                patterns: [
-                    { from: path.resolve(__dirname, './src/images'), to: path.resolve(__dirname, './dist/images') },
-                ],
-            }),
         ]
     }
 }
