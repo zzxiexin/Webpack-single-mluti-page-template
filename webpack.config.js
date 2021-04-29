@@ -1,7 +1,9 @@
 const path = require("path");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin"); // 把css文件单独分离出来
+const HtmlWebPackPlugin = require("html-webpack-plugin"); // 将打包的js注入到html模板
+const { CleanWebpackPlugin } = require('clean-webpack-plugin'); //清除之前打包的文件
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin'); // 压缩css
+const CopyWebpackPlugin = require('copy-webpack-plugin'); // 静态文件搬迁
 const handleCurDir = name => {
     return path.join(__dirname, name);
 }
@@ -13,7 +15,7 @@ module.exports = (env, argv) => {
             handleCurDir('./src/index.js')
         ],
         output: {
-            filename: '[name].js',
+            filename: '[name].[chunkhash:8].js',
             path: handleCurDir('./dist')
         },
         module: {
@@ -47,14 +49,16 @@ module.exports = (env, argv) => {
                     use: [
                         {
                             loader: 'file-loader',
-                            options: {}
+                            options: {
+                                limit: '1024'
+                            }
                         }
                     ]
                 }
             ]
         },
         plugins: [
-            new MiniCssExtractPlugin({     // 压缩css
+            new MiniCssExtractPlugin({     // 分离css
                 filename: "[name].[chunkhash:8].css",
                 chunkFilename: "[id].[chunkhash:8].css"
             }),
@@ -63,6 +67,12 @@ module.exports = (env, argv) => {
                 filename: "./index.html"
             }),
             new CleanWebpackPlugin(), // 清理之前的打包文件
+            new OptimizeCssAssetsWebpackPlugin(), //压缩css文件
+            new CopyWebpackPlugin({
+                patterns: [
+                    { from: path.resolve(__dirname, './src/images'), to: path.resolve(__dirname, './dist/images') },
+                ],
+            }),
         ]
     }
 }
