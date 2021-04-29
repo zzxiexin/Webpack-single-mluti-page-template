@@ -42,6 +42,18 @@ module.exports = (env, argv) => {
                             minimize: true
                         }
                     }]
+                },
+                {
+                    test: /\.(png|svg|jpg|gif|jpeg|ico|woff|woff2|eot|ttf|otf)$/,
+                    use: [
+                        {
+                            loader: 'url-loader', // 根据图片大小，把图片优化成base64
+                            options: {
+                                name: '[name]_[hash].[ext]',
+                                outputPath: 'images/',
+                                limit: 10000
+                            }
+                        }]
                 }
 
             ]
