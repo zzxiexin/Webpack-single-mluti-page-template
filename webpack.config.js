@@ -55,8 +55,8 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new MiniCssExtractPlugin({     // 压缩css
-                filename: "[name].[chunk].css",
-                chunkFilename: "[id].[chunk].css"
+                filename: "[name].[chunkhash:8].css",
+                chunkFilename: "[id].[chunkhash:8].css"
             }),
             new HtmlWebPackPlugin({            // 将打包好的文件注入html模板
                 template: "./src/index.html",
