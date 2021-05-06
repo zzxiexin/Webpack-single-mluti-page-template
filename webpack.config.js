@@ -26,7 +26,7 @@ const setMPA = () => {
                 new HtmlWebPackPlugin({
                     inlineSource: '.css$',
                     template: handleCurDir(`./src/${pageName}/index.html`),
-                    filename: handleCurDir(`./dist/${pageName}/`) + 'index.html',
+                    filename: handleCurDir(`./dist/${pageName}/index.html`),
                     chunks: ['vendors', pageName],
                     inject: true,
                     minify: {
@@ -52,8 +52,9 @@ module.exports = (env, argv) => {
     console.log(new MiniCssExtractPlugin())
     const devMode = argv.mode !== 'production';
     const outputPath = {
-        filename: '[name].[chunkhash:12].js',
-        path: handleCurDir('./dist/js')
+        filename: '[name].[chunkhash:8].js',
+        path: handleCurDir('./dist/js'),
+        publicPath: ''
     }
     return {
         entry,
@@ -92,7 +93,7 @@ module.exports = (env, argv) => {
                             loader: 'url-loader', // 根据图片大小，把图片优化成base64
                             options: {
                                 name: '[name]_[hash].[ext]',
-                                outputPath: 'images/',
+                                outputPath: '../images',
                                 limit: 100000
                             }
                         }]
@@ -102,9 +103,8 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new MiniCssExtractPlugin({    // 分离css
-                filename: "../css/[name].[chunkhash:12].css",
-                chunkFilename: "[id].[chunkhash:12].css",
-
+                filename: "../css/[name].[chunkhash:8].css",
+                chunkFilename: "[id].[chunkhash:8].css",
             }),
             new CleanWebpackPlugin(), // 清理之前的打包文件
             new OptimizeCssAssetsWebpackPlugin(), //压缩css文件
