@@ -3,20 +3,61 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin"); // 把css文件
 const HtmlWebPackPlugin = require("html-webpack-plugin"); // 将打包的js注入到html模板
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); //清除之前打包的文件
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin'); // 压缩css
+const glob = require('glob')
 const handleCurDir = name => {
     return path.join(__dirname, name);
 }
-module.exports = (env, argv) => {
-    const devMode = argv.mode !== 'production';
+
+const setMPA = () => {
+    const entry = {};
+    const htmlWebpackPlugins = [];
+    const entryFiles = glob.sync(handleCurDir('./src/*/index.js'));
+    console.log('entryFiles===> ', entryFiles);
+    console.log('typeof of entryFiles===> ', Array.isArray(entryFiles));
+    Object.keys(entryFiles)
+        .map((index) => {
+            const entryFile = entryFiles[index]; // 获取入口文件的路径
+            const match = entryFile.match(/src\/(.*)\/index\.js/);
+            const pageName = match && match[1]; // 获取入口文件的名称
+
+            entry[pageName] = entryFile;
+            // 循环动态打包文件
+            htmlWebpackPlugins.push(
+                new HtmlWebPackPlugin({
+                    inlineSource: '.css$',
+                    template: handleCurDir(`./src/${pageName}/index.html`),
+                    filename: handleCurDir(`./dist/${pageName}/`) + 'index.html',
+                    chunks: ['vendors', pageName],
+                    inject: true,
+                    minify: {
+                        html5: true,
+                        collapseWhitespace: true,
+                        preserveLineBreaks: false,
+                        minifyCSS: true,
+                        minifyJS: true,
+                        removeComments: false
+                    }
+                })
+            );
+        });
+
     return {
-        entry: [
-            "babel-polyfill",
-            handleCurDir('./src/index.js')
-        ],
-        output: {
-            filename: '[name].[chunkhash:8].js',
-            path: handleCurDir('./dist')
-        },
+        entry,
+        htmlWebpackPlugins
+    }
+}
+const { entry, htmlWebpackPlugins } = setMPA();
+console.log('entry===>', entry);
+module.exports = (env, argv) => {
+    console.log(new MiniCssExtractPlugin())
+    const devMode = argv.mode !== 'production';
+    const outputPath = {
+        filename: '[name].[chunkhash:12].js',
+        path: handleCurDir('./dist/js')
+    }
+    return {
+        entry,
+        output: outputPath,
         module: {
             rules: [
                 {
@@ -31,7 +72,8 @@ module.exports = (env, argv) => {
                     use: [
                         devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
                         'css-loader',
-                        'postcss-loader'
+                        'postcss-loader',
+
                     ]
                 },
                 {
@@ -59,16 +101,13 @@ module.exports = (env, argv) => {
             ]
         },
         plugins: [
-            new MiniCssExtractPlugin({     // 分离css
-                filename: "[name].[chunkhash:8].css",
-                chunkFilename: "[id].[chunkhash:8].css"
-            }),
-            new HtmlWebPackPlugin({            // 将打包好的文件注入html模板
-                template: "./src/index.html",
-                filename: "./index.html"
+            new MiniCssExtractPlugin({    // 分离css
+                filename: "../css/[name].[chunkhash:12].css",
+                chunkFilename: "[id].[chunkhash:12].css",
+
             }),
             new CleanWebpackPlugin(), // 清理之前的打包文件
             new OptimizeCssAssetsWebpackPlugin(), //压缩css文件
-        ]
+        ].concat(htmlWebpackPlugins)
     }
 }
