@@ -14,6 +14,7 @@
 4. 详细代码见webpack.config.js
 
 目前已实现的配置：（后续会不断完善）
+* 已实现多入口和多出口文件配置
 * js的处理：转换 ES6 代码，解决浏览器兼容问题,并且压缩js文件  yarn add @babel/core @babel/preset-env babel-loader @babel/plugin-transform-runtime babel-polyfill -S
 * css的处理：编译css，自动添加前缀，抽取css到独立文件,并且压缩css  yarn add mini-css-extract-plugin css-loader  style-loader postcss-loader optimize-css-assets-webpack-plugin  -S
 * html的处理：自动注入并压缩html文件 yarn add html-webpack-plugin html-loader -S 
