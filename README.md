@@ -10,7 +10,7 @@
   }, 
 ```
 3. 新建webpack.config.js,配置entry、output、module、plugins等相关配置;
-
+4. 详细代码见webpack.config.js
 
 目前已实现的配置：（后续会不断完善）
 * js的处理：转换 ES6 代码，解决浏览器兼容问题,并且压缩js文件  yarn add @babel/core @babel/preset-env babel-loader @babel/plugin-transform-runtime babel-polyfill -S
