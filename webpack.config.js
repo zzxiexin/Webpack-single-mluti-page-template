@@ -4,6 +4,7 @@ const HtmlWebPackPlugin = require("html-webpack-plugin"); // 将打包的js注�
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); //清除之前打包的文件
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin'); // 压缩css
 const handleCurDir = name => {
+    console.log(path.join(__dirname))
     return path.join(__dirname, name);
 }
 module.exports = (env, argv) => {
@@ -15,7 +16,7 @@ module.exports = (env, argv) => {
         ],
         output: {
             filename: '[name].[chunkhash:8].js',
-            path: handleCurDir('./dist')
+            path: handleCurDir('./dist', '')
         },
         module: {
             rules: [
